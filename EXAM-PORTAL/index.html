@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamPortal - Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>ExamPortal</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="registration.html" class="nav-link">Registration</a></li>
+                <li><a href="test.html" class="nav-link">Test</a></li>
+                <li><a href="result.html" class="nav-link">Result</a></li>
+                <li><a href="#" class="nav-link" id="logoutBtn" style="display: none;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Hero Section (shown when not logged in) -->
+        <section class="hero-section" id="heroSection">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Welcome to ExamPortal</h1>
+                    <p class="hero-description">
+                        Your gateway to seamless online examinations. Take tests, track progress, 
+                        and achieve academic excellence with our modern examination platform.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="login.html" class="btn btn-primary">Get Started</a>
+                        <a href="registration.html" class="btn btn-secondary">Register Now</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.pexels.com/photos/5428836/pexels-photo-5428836.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Student with laptop" class="student-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section (shown when logged in) -->
+        <section class="dashboard-section" id="dashboardSection" style="display: none;">
+            <div class="dashboard-container">
+                <div class="welcome-header">
+                    <h1>Welcome back, <span id="userName"></span>!</h1>
+                    <p>Here's your academic progress overview</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- User Profile Card -->
+                    <div class="dashboard-card profile-card">
+                        <h3>Profile Information</h3>
+                        <div class="profile-info">
+                            <p><strong>Name:</strong> <span id="profileName"></span></p>
+                            <p><strong>Student ID:</strong> <span id="profileId"></span></p>
+                            <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                            <p><strong>Branch:</strong> <span id="profileBranch"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Progress Summary Card -->
+                    <div class="dashboard-card progress-card">
+                        <h3>Progress Summary</h3>
+                        <div class="progress-stats">
+                            <div class="stat">
+                                <h4 id="testsCompleted">0</h4>
+                                <p>Tests Completed</p>
+                            </div>
+                            <div class="stat">
+                                <h4 id="averageScore">0%</h4>
+                                <p>Average Score</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Tests Card -->
+                    <div class="dashboard-card upcoming-tests">
+                        <h3>Upcoming Tests</h3>
+                        <div class="test-list">
+                            <div class="test-item">
+                                <span>Mathematics Midterm</span>
+                                <span class="test-date">Dec 15, 2024</span>
+                            </div>
+                            <div class="test-item">
+                                <span>Physics Final</span>
+                                <span class="test-date">Dec 18, 2024</span>
+                            </div>
+                            <div class="test-item">
+                                <span>Chemistry Quiz</span>
+                                <span class="test-date">Dec 20, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Study Materials Card -->
+                    <div class="dashboard-card materials-card">
+                        <h3>Study Materials</h3>
+                        <div class="materials-list">
+                            <a href="#" class="material-link">📄 Mathematics Notes</a>
+                            <a href="#" class="material-link">📊 Physics Formulas</a>
+                            <a href="#" class="material-link">🧪 Chemistry Guide</a>
+                            <a href="#" class="material-link">💻 Programming Basics</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="features-container">
+                <h2>Why Choose ExamPortal?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Fast & Reliable</h3>
+                        <p>Lightning-fast loading times and reliable performance for uninterrupted testing experience.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Secure Testing</h3>
+                        <p>Advanced security measures ensure fair and authentic examination environment.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Detailed Analytics</h3>
+                        <p>Comprehensive performance tracking and detailed result analysis for better learning.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Mobile Friendly</h3>
+                        <p>Responsive design that works seamlessly across all devices and screen sizes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ExamPortal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize home page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (currentUser) {
+                // Show dashboard, hide hero
+                document.getElementById('heroSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+                document.getElementById('logoutBtn').style.display = 'block';
+                
+                // Update dashboard with user info
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('profileName').textContent = currentUser.name;
+                document.getElementById('profileId').textContent = currentUser.id;
+                document.getElementById('profileEmail').textContent = currentUser.email;
+                document.getElementById('profileBranch').textContent = currentUser.branch;
+                
+                // Update progress stats
+                updateProgressStats();
+            } else {
+                // Show hero, hide dashboard
+                document.getElementById('heroSection').style.display = 'block';
+                document.getElementById('dashboardSection').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+            }
+        }
+
+        function updateProgressStats() {
+            const results = JSON.parse(localStorage.getItem('testResults')) || [];
+            const testsCompleted = results.length;
+            
+            let totalScore = 0;
+            results.forEach(result => {
+                totalScore += result.percentage;
+            });
+            
+            const averageScore = testsCompleted > 0 ? Math.round(totalScore / testsCompleted) : 0;
+            
+            document.getElementById('testsCompleted').textContent = testsCompleted;
+            document.getElementById('averageScore').textContent = averageScore + '%';
+        }
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>

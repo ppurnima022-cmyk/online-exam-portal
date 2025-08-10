@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamPortal - Results</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>ExamPortal</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="registration.html" class="nav-link">Registration</a></li>
+                <li><a href="test.html" class="nav-link">Test</a></li>
+                <li><a href="result.html" class="nav-link active">Result</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="results-main">
+        <div class="results-container">
+            <div class="results-header">
+                <h1>📊 Test Results</h1>
+                <p>View your examination performance and detailed analytics</p>
+            </div>
+
+            <!-- Overall Statistics -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-content">
+                        <h3 id="totalTests">0</h3>
+                        <p>Tests Completed</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-content">
+                        <h3 id="averageScore">0%</h3>
+                        <p>Average Score</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <h3 id="bestScore">0%</h3>
+                        <p>Best Performance</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-content">
+                        <h3 id="totalTime">0m</h3>
+                        <p>Total Time Spent</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="results-table-container">
+                <div class="table-header">
+                    <h2>Test History</h2>
+                    <div class="table-actions">
+                        <button class="btn btn-secondary" onclick="exportResults()">📥 Export Results</button>
+                        <button class="btn btn-primary" onclick="refreshResults()">🔄 Refresh</button>
+                    </div>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Date</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                                <th>Time Used</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <!-- Results will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📋</div>
+                    <h3>No test results found</h3>
+                    <p>You haven't taken any tests yet. Start with your first examination!</p>
+                    <a href="test.html" class="btn btn-primary">Take a Test</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Result Details Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2>📊 Detailed Results</h2>
+                <span class="close-btn" onclick="closeResultModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="result-details">
+                    <div class="result-summary">
+                        <h3 id="modalTestName">Test Name</h3>
+                        <div class="summary-stats">
+                            <div class="summary-item">
+                                <span class="label">Score:</span>
+                                <span class="value" id="modalScore">0/10</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Percentage:</span>
+                                <span class="value" id="modalPercentage">0%</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Time Used:</span>
+                                <span class="value" id="modalTimeUsed">0 minutes</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Date:</span>
+                                <span class="value" id="modalDate">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="performance-chart">
+                        <h4>Performance Breakdown</h4>
+                        <div class="chart-container">
+                            <div class="progress-circle">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle class="progress-ring-circle-bg" cx="60" cy="60" r="50"></circle>
+                                    <circle class="progress-ring-circle" cx="60" cy="60" r="50" id="progressCircle"></circle>
+                                </svg>
+                                <div class="progress-text" id="progressText">0%</div>
+                            </div>
+                            <div class="chart-stats">
+                                <div class="chart-stat correct">
+                                    <div class="chart-stat-icon">✅</div>
+                                    <div class="chart-stat-content">
+                                        <span class="chart-stat-value" id="modalCorrect">0</span>
+                                        <span class="chart-stat-label">Correct</span>
+                                    </div>
+                                </div>
+                                <div class="chart-stat wrong">
+                                    <div class="chart-stat-icon">❌</div>
+                                    <div class="chart-stat-content">
+                                        <span class="chart-stat-value" id="modalWrong">0</span>
+                                        <span class="chart-stat-label">Wrong</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations">
+                        <h4>📚 Recommendations</h4>
+                        <div class="recommendation-list" id="recommendationList">
+                            <!-- Recommendations will be generated based on performance -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ExamPortal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load and display results
+        function loadResults() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const testResults = JSON.parse(localStorage.getItem('testResults')) || [];
+            
+            // Filter results for current user (if logged in)
+            const userResults = currentUser ? 
+                testResults.filter(result => result.studentId === currentUser.id) : 
+                testResults;
+            
+            if (userResults.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                document.querySelector('.results-table-container .table-wrapper').style.display = 'none';
+                return;
+            }
+            
+            // Update overview statistics
+            updateOverviewStats(userResults);
+            
+            // Populate results table
+            const tbody = document.getElementById('resultsTableBody');
+            tbody.innerHTML = userResults.map((result, index) => `
+                <tr>
+                    <td>
+                        <div class="test-name-cell">
+                            <strong>${result.testName}</strong>
+                        </div>
+                    </td>
+                    <td>${new Date(result.date).toLocaleDateString()}</td>
+                    <td>
+                        <span class="score-badge">${result.correctAnswers}/${result.totalQuestions}</span>
+                    </td>
+                    <td>
+                        <div class="percentage-cell">
+                            <span class="percentage-value ${getPercentageClass(result.percentage)}">${result.percentage}%</span>
+                            <div class="mini-progress">
+                                <div class="mini-progress-fill" style="width: ${result.percentage}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${result.timeUsed}m</td>
+                    <td>
+                        <span class="status-badge ${getStatusClass(result.percentage)}">
+                            ${getStatusText(result.percentage)}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-small" onclick="showResultDetails(${index})">
+                            View Details
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateOverviewStats(results) {
+            const totalTests = results.length;
+            const totalScore = results.reduce((sum, result) => sum + result.percentage, 0);
+            const averageScore = totalTests > 0 ? Math.round(totalScore / totalTests) : 0;
+            const bestScore = totalTests > 0 ? Math.max(...results.map(r => r.percentage)) : 0;
+            const totalTime = results.reduce((sum, result) => sum + result.timeUsed, 0);
+            
+            document.getElementById('totalTests').textContent = totalTests;
+            document.getElementById('averageScore').textContent = averageScore + '%';
+            document.getElementById('bestScore').textContent = bestScore + '%';
+            document.getElementById('totalTime').textContent = totalTime + 'm';
+        }
+
+        function getPercentageClass(percentage) {
+            if (percentage >= 80) return 'excellent';
+            if (percentage >= 60) return 'good';
+            if (percentage >= 40) return 'average';
+            return 'poor';
+        }
+
+        function getStatusClass(percentage) {
+            if (percentage >= 60) return 'passed';
+            return 'failed';
+        }
+
+        function getStatusText(percentage) {
+            if (percentage >= 80) return 'Excellent';
+            if (percentage >= 60) return 'Passed';
+            if (percentage >= 40) return 'Average';
+            return 'Needs Improvement';
+        }
+
+        function showResultDetails(index) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const testResults = JSON.parse(localStorage.getItem('testResults')) || [];
+            const userResults = currentUser ? 
+                testResults.filter(result => result.studentId === currentUser.id) : 
+                testResults;
+            
+            const result = userResults[index];
+            
+            // Populate modal with result details
+            document.getElementById('modalTestName').textContent = result.testName;
+            document.getElementById('modalScore').textContent = `${result.correctAnswers}/${result.totalQuestions}`;
+            document.getElementById('modalPercentage').textContent = result.percentage + '%';
+            document.getElementById('modalTimeUsed').textContent = result.timeUsed + ' minutes';
+            document.getElementById('modalDate').textContent = new Date(result.date).toLocaleDateString();
+            document.getElementById('modalCorrect').textContent = result.correctAnswers;
+            document.getElementById('modalWrong').textContent = result.wrongAnswers;
+            
+            // Update progress circle
+            updateProgressCircle(result.percentage);
+            
+            // Generate recommendations
+            generateRecommendations(result);
+            
+            // Show modal
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        function updateProgressCircle(percentage) {
+            const circle = document.getElementById('progressCircle');
+            const text = document.getElementById('progressText');
+            const radius = 50;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = offset;
+            text.textContent = percentage + '%';
+        }
+
+        function generateRecommendations(result) {
+            const recommendationList = document.getElementById('recommendationList');
+            const percentage = result.percentage;
+            let recommendations = [];
+            
+            if (percentage >= 80) {
+                recommendations = [
+                    "🌟 Excellent performance! Keep up the great work!",
+                    "📚 Consider taking advanced level tests to challenge yourself further",
+                    "👥 Share your study strategies with other students"
+                ];
+            } else if (percentage >= 60) {
+                recommendations = [
+                    "✅ Good job! You're on the right track",
+                    "📖 Review the topics where you made mistakes",
+                    "⏰ Practice time management for better efficiency"
+                ];
+            } else if (percentage >= 40) {
+                recommendations = [
+                    "📚 Focus on strengthening your fundamentals",
+                    "🎯 Practice more questions on weak topics",
+                    "👨‍🏫 Consider seeking help from instructors or peers"
+                ];
+            } else {
+                recommendations = [
+                    "📖 Dedicate more time to studying the basic concepts",
+                    "📝 Create a structured study plan",
+                    "🤝 Join study groups or get tutoring support",
+                    "⏰ Take practice tests to improve your performance"
+                ];
+            }
+            
+            recommendationList.innerHTML = recommendations
+                .map(rec => `<div class="recommendation-item">${rec}</div>`)
+                .join('');
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+
+        function refreshResults() {
+            loadResults();
+            showSuccessMessage('Results refreshed successfully!');
+        }
+
+        function exportResults() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const testResults = JSON.parse(localStorage.getItem('testResults')) || [];
+            const userResults = currentUser ? 
+                testResults.filter(result => result.studentId === currentUser.id) : 
+                testResults;
+            
+            if (userResults.length === 0) {
+                showErrorMessage('No results to export!');
+                return;
+            }
+            
+            // Create CSV content
+            const csvHeaders = ['Test Name', 'Date', 'Score', 'Percentage', 'Time Used', 'Status'];
+            const csvRows = userResults.map(result => [
+                result.testName,
+                new Date(result.date).toLocaleDateString(),
+                `${result.correctAnswers}/${result.totalQuestions}`,
+                `${result.percentage}%`,
+                `${result.timeUsed}m`,
+                getStatusText(result.percentage)
+            ]);
+            
+            const csvContent = [csvHeaders, ...csvRows]
+                .map(row => row.join(','))
+                .join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'exam_results.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showSuccessMessage('Results exported successfully!');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('resultModal');
+            if (event.target === modal) {
+                closeResultModal();
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                showErrorMessage('Please login to view your results.');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            loadResults();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamPortal - Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>ExamPortal</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="login.html" class="nav-link active">Login</a></li>
+                <li><a href="registration.html" class="nav-link">Registration</a></li>
+                <li><a href="test.html" class="nav-link">Test</a></li>
+                <li><a href="result.html" class="nav-link">Result</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="login-main">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Please select your login type and enter your credentials</p>
+            </div>
+
+            <!-- Login Type Selection -->
+            <div class="login-type-selection">
+                <button class="login-type-btn active" id="studentBtn" onclick="switchLoginType('student')">
+                    👨‍🎓 Student Login
+                </button>
+                <button class="login-type-btn" id="adminBtn" onclick="switchLoginType('admin')">
+                    👨‍💼 Admin Login
+                </button>
+            </div>
+
+            <!-- Student Login Form -->
+            <div class="login-form-container" id="studentLogin">
+                <form class="login-form" id="studentLoginForm">
+                    <h2>Student Login</h2>
+                    <div class="form-group">
+                        <label for="studentEmail">Email / Student ID</label>
+                        <input type="text" id="studentEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentPassword">Password</label>
+                        <input type="password" id="studentPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary login-btn">Login as Student</button>
+                </form>
+                
+                <div class="demo-credentials">
+                    <h4>Demo Credentials:</h4>
+                    <p><strong>Email:</strong> john@example.com</p>
+                    <p><strong>Password:</strong> password123</p>
+                </div>
+            </div>
+
+            <!-- Admin Login Form -->
+            <div class="login-form-container" id="adminLogin" style="display: none;">
+                <form class="login-form" id="adminLoginForm">
+                    <h2>Admin Login</h2>
+                    <div class="form-group">
+                        <label for="adminEmail">Admin Email</label>
+                        <input type="email" id="adminEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary login-btn">Login as Admin</button>
+                </form>
+                
+                <div class="demo-credentials">
+                    <h4>Demo Credentials:</h4>
+                    <p><strong>Email:</strong> admin@examportal.com</p>
+                    <p><strong>Password:</strong> admin123</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ExamPortal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Demo users data
+        const demoUsers = {
+            students: [
+                { id: 'STU001', name: 'John Doe', email: 'john@example.com', password: 'password123', branch: 'CSE' },
+                { id: 'STU002', name: 'Jane Smith', email: 'jane@example.com', password: 'password123', branch: 'IT' },
+                { id: 'STU003', name: 'Mike Johnson', email: 'mike@example.com', password: 'password123', branch: 'ECE' }
+            ],
+            admins: [
+                { id: 'ADM001', name: 'Admin User', email: 'admin@examportal.com', password: 'admin123', role: 'admin' }
+            ]
+        };
+
+        // Switch between login types
+        function switchLoginType(type) {
+            const studentBtn = document.getElementById('studentBtn');
+            const adminBtn = document.getElementById('adminBtn');
+            const studentLogin = document.getElementById('studentLogin');
+            const adminLogin = document.getElementById('adminLogin');
+
+            if (type === 'student') {
+                studentBtn.classList.add('active');
+                adminBtn.classList.remove('active');
+                studentLogin.style.display = 'block';
+                adminLogin.style.display = 'none';
+            } else {
+                adminBtn.classList.add('active');
+                studentBtn.classList.remove('active');
+                adminLogin.style.display = 'block';
+                studentLogin.style.display = 'none';
+            }
+        }
+
+        // Student login form handler
+        document.getElementById('studentLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('studentEmail').value;
+            const password = document.getElementById('studentPassword').value;
+            
+            // Check credentials
+            const user = demoUsers.students.find(u => 
+                (u.email === email || u.id === email) && u.password === password
+            );
+            
+            if (user) {
+                // Store user session
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showSuccessMessage('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            } else {
+                showErrorMessage('Invalid credentials. Please try again.');
+            }
+        });
+
+        // Admin login form handler
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            // Check admin credentials
+            const admin = demoUsers.admins.find(u => 
+                u.email === email && u.password === password
+            );
+            
+            if (admin) {
+                // Store admin session
+                localStorage.setItem('currentUser', JSON.stringify(admin));
+                showSuccessMessage('Admin login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            } else {
+                showErrorMessage('Invalid admin credentials. Please try again.');
+            }
+        });
+
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

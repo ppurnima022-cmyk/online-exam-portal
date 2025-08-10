@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamPortal - Registration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>ExamPortal</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="registration.html" class="nav-link active">Registration</a></li>
+                <li><a href="test.html" class="nav-link">Test</a></li>
+                <li><a href="result.html" class="nav-link">Result</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="registration-main">
+        <div class="registration-container">
+            <div class="registration-header">
+                <h1>Test Registration</h1>
+                <p>Register for upcoming examinations</p>
+            </div>
+
+            <!-- Upcoming Tests Table -->
+            <div class="tests-table-container">
+                <h2>Upcoming Tests</h2>
+                <div class="table-wrapper">
+                    <table class="tests-table">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Date & Time</th>
+                                <th>Duration</th>
+                                <th>Subject</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mathematics Midterm Examination</td>
+                                <td>December 15, 2024 - 10:00 AM</td>
+                                <td>2 hours</td>
+                                <td>Mathematics</td>
+                                <td><button class="btn btn-primary register-btn" onclick="openRegistrationForm('Mathematics Midterm Examination')">Register</button></td>
+                            </tr>
+                            <tr>
+                                <td>Physics Final Assessment</td>
+                                <td>December 18, 2024 - 2:00 PM</td>
+                                <td>3 hours</td>
+                                <td>Physics</td>
+                                <td><button class="btn btn-primary register-btn" onclick="openRegistrationForm('Physics Final Assessment')">Register</button></td>
+                            </tr>
+                            <tr>
+                                <td>Chemistry Quiz - Organic Compounds</td>
+                                <td>December 20, 2024 - 11:00 AM</td>
+                                <td>1 hour</td>
+                                <td>Chemistry</td>
+                                <td><button class="btn btn-primary register-btn" onclick="openRegistrationForm('Chemistry Quiz - Organic Compounds')">Register</button></td>
+                            </tr>
+                            <tr>
+                                <td>Programming Fundamentals Test</td>
+                                <td>December 22, 2024 - 3:00 PM</td>
+                                <td>2.5 hours</td>
+                                <td>Computer Science</td>
+                                <td><button class="btn btn-primary register-btn" onclick="openRegistrationForm('Programming Fundamentals Test')">Register</button></td>
+                            </tr>
+                            <tr>
+                                <td>English Literature Analysis</td>
+                                <td>December 25, 2024 - 9:00 AM</td>
+                                <td>2 hours</td>
+                                <td>English</td>
+                                <td><button class="btn btn-primary register-btn" onclick="openRegistrationForm('English Literature Analysis')">Register</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Registration Modal -->
+    <div class="modal" id="registrationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Test Registration</h2>
+                <span class="close-btn" onclick="closeRegistrationForm()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Registering for: <strong id="selectedTest"></strong></p>
+                <form class="registration-form" id="registrationForm">
+                    <div class="form-group">
+                        <label for="studentName">Full Name</label>
+                        <input type="text" id="studentName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentId">Student ID</label>
+                        <input type="text" id="studentId" name="studentId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentEmail">Email Address</label>
+                        <input type="email" id="studentEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentBranch">Branch</label>
+                        <select id="studentBranch" name="branch" required>
+                            <option value="">Select Branch</option>
+                            <option value="CSE">Computer Science Engineering (CSE)</option>
+                            <option value="IT">Information Technology (IT)</option>
+                            <option value="CSM">Computer Science & Mathematics (CSM)</option>
+                            <option value="CSD">Computer Science & Design (CSD)</option>
+                            <option value="ECE">Electronics & Communication Engineering (ECE)</option>
+                            <option value="EEE">Electrical & Electronics Engineering (EEE)</option>
+                            <option value="CIVIL">Civil Engineering</option>
+                            <option value="MECH">Mechanical Engineering</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeRegistrationForm()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Register Now</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-modal">
+            <div class="modal-header">
+                <h2>✅ Registration Successful!</h2>
+            </div>
+            <div class="modal-body">
+                <p>You have been successfully registered for the test.</p>
+                <p><strong>Test:</strong> <span id="registeredTest"></span></p>
+                <p><strong>Student:</strong> <span id="registeredStudent"></span></p>
+                <div class="success-actions">
+                    <button class="btn btn-primary" onclick="closeSuccessModal()">Close</button>
+                    <a href="test.html" class="btn btn-secondary">Take Test Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ExamPortal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        let currentTest = '';
+
+        function openRegistrationForm(testName) {
+            currentTest = testName;
+            document.getElementById('selectedTest').textContent = testName;
+            document.getElementById('registrationModal').style.display = 'flex';
+            
+            // Pre-fill form if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                document.getElementById('studentName').value = currentUser.name || '';
+                document.getElementById('studentId').value = currentUser.id || '';
+                document.getElementById('studentEmail').value = currentUser.email || '';
+                document.getElementById('studentBranch').value = currentUser.branch || '';
+            }
+        }
+
+        function closeRegistrationForm() {
+            document.getElementById('registrationModal').style.display = 'none';
+            document.getElementById('registrationForm').reset();
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // Registration form handler
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const registration = {
+                testName: currentTest,
+                name: formData.get('name'),
+                studentId: formData.get('studentId'),
+                email: formData.get('email'),
+                branch: formData.get('branch'),
+                registrationDate: new Date().toISOString()
+            };
+            
+            // Store registration data
+            let registrations = JSON.parse(localStorage.getItem('testRegistrations')) || [];
+            registrations.push(registration);
+            localStorage.setItem('testRegistrations', JSON.stringify(registrations));
+            
+            // Show success modal
+            document.getElementById('registeredTest').textContent = currentTest;
+            document.getElementById('registeredStudent').textContent = registration.name;
+            document.getElementById('registrationModal').style.display = 'none';
+            document.getElementById('successModal').style.display = 'flex';
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const registrationModal = document.getElementById('registrationModal');
+            const successModal = document.getElementById('successModal');
+            
+            if (event.target === registrationModal) {
+                closeRegistrationForm();
+            }
+            if (event.target === successModal) {
+                closeSuccessModal();
+            }
+        }
+    </script>
+</body>
+</html>

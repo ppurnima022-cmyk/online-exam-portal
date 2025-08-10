@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamPortal - Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>ExamPortal</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="registration.html" class="nav-link">Registration</a></li>
+                <li><a href="test.html" class="nav-link active">Test</a></li>
+                <li><a href="result.html" class="nav-link">Result</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="test-main">
+        <!-- Test Rules Section -->
+        <div class="test-container" id="rulesSection">
+            <div class="rules-header">
+                <h1>📋 Test Instructions</h1>
+                <p>Please read all instructions carefully before starting the test</p>
+            </div>
+
+            <div class="rules-content">
+                <div class="rules-card">
+                    <h3>📝 General Instructions</h3>
+                    <ul>
+                        <li>This test contains 10 multiple-choice questions</li>
+                        <li>Each question carries 1 mark (Total: 10 marks)</li>
+                        <li>Time limit: 15 minutes</li>
+                        <li>You cannot go back to previous questions once answered</li>
+                        <li>Choose the best answer for each question</li>
+                    </ul>
+                </div>
+
+                <div class="rules-card">
+                    <h3>⚠️ Important Guidelines</h3>
+                    <ul>
+                        <li>Ensure stable internet connection throughout the test</li>
+                        <li>Do not refresh the browser or navigate away from this page</li>
+                        <li>The test will auto-submit when time runs out</li>
+                        <li>Make sure your device is fully charged</li>
+                        <li>Close all other applications and browser tabs</li>
+                    </ul>
+                </div>
+
+                <div class="rules-card">
+                    <h3>🚫 Prohibited Actions</h3>
+                    <ul>
+                        <li>Using external resources or materials</li>
+                        <li>Communicating with others during the test</li>
+                        <li>Taking screenshots or copying questions</li>
+                        <li>Using mobile phones or other devices</li>
+                        <li>Opening additional browser windows</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="test-start-section">
+                <h3>Ready to begin?</h3>
+                <p>Make sure you have read and understood all the instructions above.</p>
+                <button class="btn btn-primary btn-large" id="startTestBtn">🚀 Start Test</button>
+            </div>
+        </div>
+
+        <!-- Test Section -->
+        <div class="test-container" id="testSection" style="display: none;">
+            <div class="test-header">
+                <div class="test-info">
+                    <h2>Sample Mathematics Test</h2>
+                    <p>Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span></p>
+                </div>
+                <div class="timer">
+                    <div class="timer-icon">⏰</div>
+                    <div class="timer-text">
+                        <span id="timeRemaining">15:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="question-container" id="questionContainer">
+                <!-- Questions will be loaded here dynamically -->
+            </div>
+
+            <div class="test-navigation">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" style="display: none;">Previous</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next Question</button>
+                <button class="btn btn-success" id="submitBtn" onclick="submitTest()" style="display: none;">Submit Test</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="test-container" id="resultsSection" style="display: none;">
+            <div class="results-header">
+                <h1>🎉 Test Completed!</h1>
+                <p>Here are your results:</p>
+            </div>
+
+            <div class="results-summary">
+                <div class="result-card">
+                    <h3>Your Score</h3>
+                    <div class="score-display">
+                        <span class="score-number" id="finalScore">0</span>
+                        <span class="score-total">/ 10</span>
+                    </div>
+                    <div class="percentage" id="finalPercentage">0%</div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Performance Breakdown</h3>
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <span class="stat-number" id="correctAnswers">0</span>
+                            <span class="stat-label">Correct</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="wrongAnswers">0</span>
+                            <span class="stat-label">Wrong</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="timeUsed">0</span>
+                            <span class="stat-label">Time Used</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <a href="result.html" class="btn btn-primary">View All Results</a>
+                <a href="test.html" class="btn btn-secondary">Take Another Test</a>
+                <a href="index.html" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ExamPortal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Sample questions data
+        const testQuestions = [
+            {
+                question: "What is the derivative of x² + 3x + 2?",
+                options: ["2x + 3", "x² + 3", "2x + 2", "3x + 2"],
+                correct: 0
+            },
+            {
+                question: "If f(x) = 2x + 1, what is f(3)?",
+                options: ["5", "6", "7", "8"],
+                correct: 2
+            },
+            {
+                question: "What is the solution to 2x + 6 = 14?",
+                options: ["x = 3", "x = 4", "x = 5", "x = 6"],
+                correct: 1
+            },
+            {
+                question: "Which of the following is a prime number?",
+                options: ["15", "21", "17", "27"],
+                correct: 2
+            },
+            {
+                question: "What is 15% of 200?",
+                options: ["25", "30", "35", "40"],
+                correct: 1
+            },
+            {
+                question: "If a triangle has angles 60°, 60°, and 60°, it is:",
+                options: ["Right triangle", "Isosceles triangle", "Equilateral triangle", "Scalene triangle"],
+                correct: 2
+            },
+            {
+                question: "What is the value of π (pi) rounded to 2 decimal places?",
+                options: ["3.14", "3.15", "3.16", "3.17"],
+                correct: 0
+            },
+            {
+                question: "If log₁₀(100) = x, what is x?",
+                options: ["1", "2", "10", "100"],
+                correct: 1
+            },
+            {
+                question: "What is the area of a circle with radius 5?",
+                options: ["25π", "10π", "5π", "15π"],
+                correct: 0
+            },
+            {
+                question: "Which is the correct formula for quadratic equation?",
+                options: ["ax + b = 0", "ax² + bx + c = 0", "ax³ + bx² + cx + d = 0", "ax² + b = 0"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let testStartTime;
+        let timerInterval;
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+
+        // Start test
+        document.getElementById('startTestBtn').addEventListener('click', function() {
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                showErrorMessage('Please login first to take the test.');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+
+            document.getElementById('rulesSection').style.display = 'none';
+            document.getElementById('testSection').style.display = 'block';
+            
+            testStartTime = new Date();
+            startTimer();
+            loadQuestion();
+        });
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timeRemaining').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function loadQuestion() {
+            const question = testQuestions[currentQuestionIndex];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <h3>Question ${currentQuestionIndex + 1}</h3>
+                    <p class="question-text">${question.question}</p>
+                    <div class="options-container">
+                        ${question.options.map((option, index) => `
+                            <label class="option-label">
+                                <input type="radio" name="answer" value="${index}" onchange="selectAnswer(${index})">
+                                <span class="option-text">${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            updateProgress();
+            updateNavigationButtons();
+        }
+
+        function selectAnswer(answerIndex) {
+            userAnswers[currentQuestionIndex] = answerIndex;
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < testQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / testQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestionIndex > 0 ? 'block' : 'none';
+            
+            if (currentQuestionIndex === testQuestions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval);
+            
+            // Calculate results
+            let correctCount = 0;
+            for (let i = 0; i < testQuestions.length; i++) {
+                if (userAnswers[i] === testQuestions[i].correct) {
+                    correctCount++;
+                }
+            }
+            
+            const percentage = Math.round((correctCount / testQuestions.length) * 100);
+            const timeUsed = Math.round((new Date() - testStartTime) / 1000 / 60); // in minutes
+            
+            // Store result
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const result = {
+                testName: 'Sample Mathematics Test',
+                studentId: currentUser ? currentUser.id : 'Anonymous',
+                studentName: currentUser ? currentUser.name : 'Anonymous',
+                totalQuestions: testQuestions.length,
+                correctAnswers: correctCount,
+                wrongAnswers: testQuestions.length - correctCount,
+                percentage: percentage,
+                timeUsed: timeUsed,
+                date: new Date().toISOString(),
+                answers: userAnswers
+            };
+            
+            let testResults = JSON.parse(localStorage.getItem('testResults')) || [];
+            testResults.push(result);
+            localStorage.setItem('testResults', JSON.stringify(testResults));
+            
+            // Show results
+            showResults(result);
+        }
+
+        function showResults(result) {
+            document.getElementById('testSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            document.getElementById('finalScore').textContent = result.correctAnswers;
+            document.getElementById('finalPercentage').textContent = result.percentage + '%';
+            document.getElementById('correctAnswers').textContent = result.correctAnswers;
+            document.getElementById('wrongAnswers').textContent = result.wrongAnswers;
+            document.getElementById('timeUsed').textContent = result.timeUsed + 'm';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('totalQuestions').textContent = testQuestions.length;
+        });
+    </script>
+</body>
+</html>
